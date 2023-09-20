@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using UnityEditor.Tilemaps;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
    
 
     [Header("Checks")]
-    public Transform groundCheckPoint;
+    public Transform[] groundCheckPoint;
     private Vector2 _groundCheckSize = new Vector2(0.49f, 0.03f);
     public LayerMask groundLayer;
     public Transform frontWallCheckPoint;
@@ -126,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
         // COllision Checks
         if(!IsJumping)
         {
-           if(Physics2D.OverlapBox(groundCheckPoint.position, new Vector2(0.2f, 0.2f), 0, groundLayer) && !IsJumping)
+           if(IsOnGround())
             {
                 lastOnGroundTime = Data.coyoteTime;
             }
@@ -145,10 +140,13 @@ public class PlayerMovement : MonoBehaviour
             lastOnWallTime = Mathf.Max(lastOnWallLeftTime, lastOnWallRightTime);
         }
 
-        animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
-        animator.SetBool("IsJumping", IsJumping || IsWallJumping);
-        animator.SetBool("IsFalling", isJumpFalling);
+        SetAnimatorParams();
 
+
+        if (IsWallJumping && (Time.time - wallJumpStartTime) > Data.wallJumpTime)
+        {
+            IsWallJumping = false;
+        }
 
         // Jump check
         if (IsJumping && rb.velocity.y < 0)
@@ -165,10 +163,7 @@ public class PlayerMovement : MonoBehaviour
             isJumpFalling = true;
         }
 
-        if (IsWallJumping && (Time.time - wallJumpStartTime) > Data.wallJumpTime)
-        {
-            IsWallJumping = false;
-        }
+        
 
         if (lastOnGroundTime > 0 && !IsJumping && !IsWallJumping)
         {
@@ -322,7 +317,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private bool IsOnGround()
+    {
+        if (IsJumping)
+        {
+            return false;
+        }
+        
+        for (int i = 0; i < groundCheckPoint.Length; i++)
+        {
+            if (Physics2D.OverlapBox(groundCheckPoint[i].position, new Vector2(0.2f, 0.2f), 0, groundLayer))
+            {
+                return true;
+            }            
+        }
 
+        return false;
+    }
+    
+    private void SetAnimatorParams()
+    {
+        animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
+        animator.SetBool("IsJumping", IsJumping || IsWallJumping);
+        animator.SetBool("IsFalling", isJumpFalling);
+        animator.SetBool("IsSliding", IsSliding);
+
+
+
+        animator.SetBool("IsSitting", !(IsJumping || IsWallJumping || IsSliding) && moveInput.y < 0f);
+    }
     private void Jump()
     {
 

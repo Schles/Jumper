@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+#if UNITY_EDITOR
 public class GameUI : EditorWindow
 {
     [SerializeField]
@@ -29,3 +30,4 @@ public class GameUI : EditorWindow
         root.Add(labelFromUXML);
     }
 }
+#endif

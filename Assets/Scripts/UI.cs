@@ -12,6 +12,7 @@ public class UI : MonoBehaviour
     private Label labelBestTime;
     private Label labelLastTime;
     private Label labelLastReason;
+    private Label labelFruits;
 
 
     // Start is called before the first frame update
@@ -30,11 +31,13 @@ public class UI : MonoBehaviour
         }
         */
 
-        labelGameTime.text = "Time: " + gameController.fruitsCollected + " Fruits - " + this.gameTimeToHumanTime(gameController.gameTime);
-        if (GameState.Instance.bestTime > 0f) 
-            labelBestTime.text = "Best:" + GameState.Instance.bestFruitsCollected + " Fruits - " + this.gameTimeToHumanTime(GameState.Instance.bestTime);
-        if (GameState.Instance.lastTime > 0f)
-            labelLastTime.text = "Last:" + GameState.Instance.lastFruitsCollected + " Fruits - " +this.gameTimeToHumanTime(GameState.Instance.lastTime);
+        labelFruits.text = gameController.fruitsCollected.ToString() + " Fruit(s)";
+        
+        labelGameTime.text =  gameTimeToHumanTime(gameController.gameTime);
+//        if (GameState.Instance.bestTime > 0f) 
+            labelBestTime.text = "(" + GameState.Instance.bestFruitsCollected + ") " + gameTimeToHumanTime(GameState.Instance.bestTime) + " | Best";
+  //      if (GameState.Instance.lastTime > 0f)
+            labelLastTime.text = "Last | " + gameTimeToHumanTime(GameState.Instance.lastTime) + " (" + GameState.Instance.lastFruitsCollected + ")";
         labelLastReason.text = GameState.Instance.lastReason;
     }
 
@@ -48,12 +51,13 @@ public class UI : MonoBehaviour
         labelLastTime = root.Q<Label>("lastTime");
         labelBestTime = root.Q<Label>("bestTime");
         labelLastReason = root.Q<Label>("lastReason");
+        labelFruits = root.Q<Label>("fruits");
     }
 
     private string gameTimeToHumanTime(float gameTime)
     {
         float minutes = Mathf.Floor((gameTime %= 3600) / 60);
-        float seconds = gameTime % 60;
+        float seconds = Mathf.Floor((gameTime % 60) * 10) / 10;
         
         
         return this.formatNumber(minutes, 2) + ":" + this.formatNumber(seconds, 2);

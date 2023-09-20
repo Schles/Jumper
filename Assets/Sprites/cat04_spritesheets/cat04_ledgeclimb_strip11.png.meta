@@ -1,0 +1,399 @@
+fileFormatVersion: 2
+guid: ceecfad8c79bdc54e8ad78860f9bc6e6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2040877571155317779
+    second: cat04_ledgeclimb_strip11_0
+  - first:
+      213: -3659783748881582417
+    second: cat04_ledgeclimb_strip11_1
+  - first:
+      213: 8249729025549353997
+    second: cat04_ledgeclimb_strip11_2
+  - first:
+      213: -5517644601445555585
+    second: cat04_ledgeclimb_strip11_3
+  - first:
+      213: -8405575113425247167
+    second: cat04_ledgeclimb_strip11_4
+  - first:
+      213: -2562030227064336152
+    second: cat04_ledgeclimb_strip11_5
+  - first:
+      213: -3731548160953705233
+    second: cat04_ledgeclimb_strip11_6
+  - first:
+      213: 3350406908437033925
+    second: cat04_ledgeclimb_strip11_7
+  - first:
+      213: 716074625294755491
+    second: cat04_ledgeclimb_strip11_8
+  - first:
+      213: -6382921140821319330
+    second: cat04_ledgeclimb_strip11_9
+  - first:
+      213: -3348916318091817555
+    second: cat04_ledgeclimb_strip11_10
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 6
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31456c28657a25c10800000000000000
+      internalID: 2040877571155317779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 5
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa67a2d1216d53dc0800000000000000
+      internalID: -3659783748881582417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_2
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 6
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d04491df6dcec7270800000000000000
+      internalID: 8249729025549353997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_3
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 7
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f726cfdf7736d63b0800000000000000
+      internalID: -5517644601445555585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_4
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 6
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 144ac6f08f5695b80800000000000000
+      internalID: -8405575113425247167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_5
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 8
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e0540c2517d17cd0800000000000000
+      internalID: -2562030227064336152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_6
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 9
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fec971cd7b0e63cc0800000000000000
+      internalID: -3731548160953705233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_7
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 12
+        width: 22
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c3776ef4590f7e20800000000000000
+      internalID: 3350406908437033925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_8
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 12
+        width: 25
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a66d59e31200f900800000000000000
+      internalID: 716074625294755491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_9
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 12
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51a3046a0f4b67a0800000000000000
+      internalID: -6382921140821319330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cat04_ledgeclimb_strip11_10
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 12
+        width: 21
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dadc0ad1a524681d0800000000000000
+      internalID: -3348916318091817555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      cat04_ledgeclimb_strip11_0: 2040877571155317779
+      cat04_ledgeclimb_strip11_1: -3659783748881582417
+      cat04_ledgeclimb_strip11_10: -3348916318091817555
+      cat04_ledgeclimb_strip11_2: 8249729025549353997
+      cat04_ledgeclimb_strip11_3: -5517644601445555585
+      cat04_ledgeclimb_strip11_4: -8405575113425247167
+      cat04_ledgeclimb_strip11_5: -2562030227064336152
+      cat04_ledgeclimb_strip11_6: -3731548160953705233
+      cat04_ledgeclimb_strip11_7: 3350406908437033925
+      cat04_ledgeclimb_strip11_8: 716074625294755491
+      cat04_ledgeclimb_strip11_9: -6382921140821319330
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
