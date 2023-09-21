@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
     public float gameTime = 0;
     public int fruitsCollected = 0;
 
+    private bool IsRestarting = false;
+    private float resetInSeconds;
+
     public void Awake()
     {
         // assign a callback for the "jump" action.
@@ -30,6 +33,20 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+        if (IsRestarting)
+        {
+            resetInSeconds -= Time.deltaTime;
+        }
+
+        if (IsRestarting && resetInSeconds < 0)
+        {
+            Reset();   
+        }
+
+        
+
         
     }
 
@@ -72,8 +89,19 @@ public class GameController : MonoBehaviour
 
     public void OnGameOver(string gameOver)
     {
+
         GameState.Instance.lastReason = gameOver;
-        Reset();
+        if (gameOver == "dead")
+        {
+            IsRestarting = true;
+            resetInSeconds = 0.5f;
+        } else
+        {
+            Reset();
+        }
+
+        
+        
     }
 
     public void OnGameWon(string gameWon)
@@ -90,7 +118,8 @@ public class GameController : MonoBehaviour
             GameState.Instance.bestTime = this.gameTime;
             GameState.Instance.bestFruitsCollected = fruitsCollected;
         }
-        Reset();
+        this.IsRestarting = true;
+        resetInSeconds = 0.5f;
     }
 
     public void OnFruitCollected(GameObject go)

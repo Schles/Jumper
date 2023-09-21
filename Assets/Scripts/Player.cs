@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
 {
 
 
+
+    AudioSource[] sounds;
+
     public static event Action<string> OnGameOverAction;
     public static event Action<string> OnGameWonAction;
     public static event Action<GameObject> OnFruitCollectedAction;
@@ -20,6 +23,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        sounds = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -34,10 +38,12 @@ public class Player : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Goal":
+                sounds[3].Play();
                 OnGameWonAction.Invoke("Gewonnen! Gratuliere :)");
                 break;
 
             case "Fruit":
+                sounds[2].Play();
                 OnFruitCollectedAction.Invoke(other.gameObject);
                 break;
         }
@@ -51,7 +57,8 @@ public class Player : MonoBehaviour
             case "Trap":
                 //Destroy(this.gameObject);
                 this.isDead = true;
-                //OnGameOverAction.Invoke("Am Gegner gestorben");
+                sounds[1].Play();
+                OnGameOverAction.Invoke("dead");
                 break;
 
         }

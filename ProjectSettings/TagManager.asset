@@ -54,6 +54,9 @@ TagManager:
   - name: Props
     uniqueID: 2389042191
     locked: 0
+  - name: Trap
+    uniqueID: 501837859
+    locked: 0
   - name: Ground
     uniqueID: 4002336943
     locked: 0

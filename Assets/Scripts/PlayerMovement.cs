@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     public PlayerData Data;
 
-   
+    AudioSource[] sounds;
 
     [Header("Checks")]
     public Transform[] groundCheckPoint;
@@ -64,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GetComponent<Player>();
+
+        sounds = GetComponents<AudioSource>();
 
         rb.gravityScale = Data.gravityScale;
         IsFacingRight = true;
@@ -353,6 +355,8 @@ public class PlayerMovement : MonoBehaviour
         lastPressedJumpTime = 0;
         lastOnGroundTime = 0;
 
+        sounds[0].Play();
+
         //We increase the force applied if we are falling
         //This means we'll always feel like we jump the same amount 
         //(setting the player's Y velocity to 0 beforehand will likely work the same, but I find this more elegant :D)
@@ -370,6 +374,8 @@ public class PlayerMovement : MonoBehaviour
         lastOnGroundTime = 0;
         lastOnWallRightTime = 0;
         lastOnWallLeftTime = 0;
+
+        sounds[0].Play();
 
         Vector2 force = new Vector2(Data.wallJumpForce.x, Data.wallJumpForce.y);
         force.x *= dir; //apply force in opposite direction of wall
