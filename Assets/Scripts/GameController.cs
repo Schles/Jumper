@@ -7,10 +7,23 @@ using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+class DestroyInTime
+{
+    public float timeToLive = 0.8f;
+    public GameObject gameObject;
+
+    public DestroyInTime(GameObject gameObject)
+    {
+        this.gameObject = gameObject;
+    }
+}
+
 public class GameController : MonoBehaviour
 {
     public InputAction resetAction;
     public GameObject playerPrefab;
+
+    private GameObject player;
 
     public float gameTime = 0;
     public int fruitsCollected = 0;
@@ -18,6 +31,10 @@ public class GameController : MonoBehaviour
     private bool IsRestarting = false;
     private float resetInSeconds;
 
+    public Checkpoint activeCheckpoint;
+
+    private List<DestroyInTime> toBeDestroy = new List<DestroyInTime>();
+    
     public void Awake()
     {
         // assign a callback for the "jump" action.
@@ -27,7 +44,9 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        //player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        player = GameObject.FindWithTag("Player");
+        print(player);
     }
 
     // Update is called once per frame
@@ -42,11 +61,21 @@ public class GameController : MonoBehaviour
 
         if (IsRestarting && resetInSeconds < 0)
         {
-            Reset();   
+            Reset();
+            IsRestarting = false;
         }
 
-        
 
+        for (var i = 0; i < toBeDestroy.Count; i++)
+        {
+            toBeDestroy[i].timeToLive -= Time.deltaTime;
+
+            if (toBeDestroy[i].timeToLive < 0)
+            {
+                Destroy(toBeDestroy[i].gameObject);
+                toBeDestroy.RemoveAt(i);
+            }
+        }
         
     }
 
@@ -61,7 +90,7 @@ public class GameController : MonoBehaviour
         resetAction.Enable();
         Player.OnGameOverAction += OnGameOver;
         Player.OnGameWonAction += OnGameWon;
-        Player.OnFruitCollectedAction += OnFruitCollected;
+        Fruit.OnFruitCollectedAction += OnFruitCollected;
 
     }
 
@@ -70,7 +99,7 @@ public class GameController : MonoBehaviour
         resetAction.Disable();
         Player.OnGameOverAction -= OnGameOver;
         Player.OnGameWonAction -= OnGameWon;
-        Player.OnFruitCollectedAction -= OnFruitCollected;
+        Fruit.OnFruitCollectedAction -= OnFruitCollected;
     }
 
     private void PlayerOutOfBounds()
@@ -125,7 +154,8 @@ public class GameController : MonoBehaviour
     public void OnFruitCollected(GameObject go)
     {
         fruitsCollected++;
-        Destroy(go);
+        var a = new DestroyInTime(go);
+        toBeDestroy.Add(a);
     }
     public void OnReset(InputAction.CallbackContext context)
     {
@@ -135,6 +165,18 @@ public class GameController : MonoBehaviour
 
     private void Reset()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        if (activeCheckpoint)
+        {
+            player.transform.position = activeCheckpoint.transform.position;    
+        }
+        else
+        {
+            player.transform.position = new Vector3(0f, 0f, player.transform.position.z);
+        }
+        
+        player.GetComponent<Player>().isDead = false;
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

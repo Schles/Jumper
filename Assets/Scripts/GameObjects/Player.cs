@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     public static event Action<string> OnGameOverAction;
     public static event Action<string> OnGameWonAction;
-    public static event Action<GameObject> OnFruitCollectedAction;
+
 
     public bool isDead = false;
 
@@ -38,13 +38,9 @@ public class Player : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Goal":
-                sounds[3].Play();
-                OnGameWonAction.Invoke("Gewonnen! Gratuliere :)");
-                break;
-
-            case "Fruit":
                 sounds[2].Play();
-                OnFruitCollectedAction.Invoke(other.gameObject);
+                GameState.Instance.canDoubleJump = true;
+                //OnGameWonAction.Invoke("Gewonnen! Gratuliere :)");
                 break;
         }
     }
@@ -55,7 +51,6 @@ public class Player : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Trap":
-                //Destroy(this.gameObject);
                 this.isDead = true;
                 sounds[1].Play();
                 OnGameOverAction.Invoke("dead");
@@ -63,11 +58,5 @@ public class Player : MonoBehaviour
 
         }
 
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-
-        
     }
 }

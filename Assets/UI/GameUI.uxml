@@ -2,9 +2,7 @@
     <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: column;">
         <ui:Label text="00:00:00,0" name="gameTime" style="-unity-text-align: upper-center; font-size: 28px; color: rgb(255, 255, 255);" />
         <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: none; justify-content: center; align-items: flex-start; flex-direction: row; flex-basis: auto; flex-shrink: 1;">
-            <ui:Label text="Best: " name="bestTime" style="color: rgb(255, 255, 255); width: 111px; align-items: flex-start; -unity-text-align: upper-right;" />
             <ui:Label text="0 Fruits" name="fruits" style="color: rgb(255, 255, 255); width: 356px; align-items: flex-start; -unity-text-align: upper-center; height: 28px;" />
-            <ui:Label text="Last: " name="lastTime" style="color: rgb(255, 255, 255);" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:Label text="Last Reason" name="lastReason" style="color: rgb(255, 255, 255); -unity-text-align: upper-left;" />

@@ -31,13 +31,11 @@ public class UI : MonoBehaviour
         }
         */
 
-        labelFruits.text = gameController.fruitsCollected.ToString() + " Fruit(s)";
+        string doubleJump = GameState.Instance.canDoubleJump ? " | Double Jump enabled" : "";
+        
+        labelFruits.text = gameController.fruitsCollected.ToString() + " Fruit(s)" + doubleJump;
         
         labelGameTime.text =  gameTimeToHumanTime(gameController.gameTime);
-//        if (GameState.Instance.bestTime > 0f) 
-            labelBestTime.text = "(" + GameState.Instance.bestFruitsCollected + ") " + gameTimeToHumanTime(GameState.Instance.bestTime) + " | Best";
-  //      if (GameState.Instance.lastTime > 0f)
-            labelLastTime.text = "Last | " + gameTimeToHumanTime(GameState.Instance.lastTime) + " (" + GameState.Instance.lastFruitsCollected + ")";
         labelLastReason.text = GameState.Instance.lastReason;
     }
 
@@ -48,8 +46,6 @@ public class UI : MonoBehaviour
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         labelGameTime = root.Q<Label>("gameTime");
-        labelLastTime = root.Q<Label>("lastTime");
-        labelBestTime = root.Q<Label>("bestTime");
         labelLastReason = root.Q<Label>("lastReason");
         labelFruits = root.Q<Label>("fruits");
     }
@@ -57,7 +53,7 @@ public class UI : MonoBehaviour
     private string gameTimeToHumanTime(float gameTime)
     {
         float minutes = Mathf.Floor((gameTime %= 3600) / 60);
-        float seconds = Mathf.Floor((gameTime % 60) * 10) / 10;
+        float seconds = Mathf.Floor(gameTime % 60);
         
         
         return this.formatNumber(minutes, 2) + ":" + this.formatNumber(seconds, 2);

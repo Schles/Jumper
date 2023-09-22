@@ -11,12 +11,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Checks")]
     public Transform[] groundCheckPoint;
-    private Vector2 _groundCheckSize = new Vector2(0.49f, 0.03f);
+    
     public LayerMask groundLayer;
     public Transform frontWallCheckPoint;
     public Transform backWallCheckPoint;
+    
+    
     private Vector2 _wallCheckSize = new Vector2(0.5f, 1f);
-
+    private Vector2 _groundCheckSize = new Vector2(0.49f, 0.03f);
     [Header("Input")]
     public InputAction moveAction;
     public InputAction jumpAction;
@@ -49,7 +51,10 @@ public class PlayerMovement : MonoBehaviour
     public float wallJumpStartTime = 0f;
 
     public float lastPressedJumpTime = 0f;
-    
+
+    public bool hasDoubleJumped = false;
+
+    private GameState gameState;
 
     public void Awake()
     {
@@ -70,14 +75,16 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = Data.gravityScale;
         IsFacingRight = true;
 
+        gameState = GameState.Instance;
+
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if ( player.isDead )
-        {
-            return;
-        }
+        // if ( player.isDead )
+        // {
+        //     return;
+        // }
 
         lastPressedJumpTime = Data.jumpInputBufferTime;
     }
@@ -106,6 +113,9 @@ public class PlayerMovement : MonoBehaviour
         if (!player.isDead)
         {
             moveAmount = moveAction.ReadValue<Vector2>();
+        }
+        else
+        {
         }
 
         moveInput = moveAmount;
@@ -174,6 +184,7 @@ public class PlayerMovement : MonoBehaviour
             if (!IsJumping)
             {
                 isJumpFalling = false;
+                hasDoubleJumped = false;
             }
         }
 
@@ -181,8 +192,14 @@ public class PlayerMovement : MonoBehaviour
 
 
         // Jump
-        if( CanJump() && lastPressedJumpTime > 0)
+        if( (CanJump() || CanDoubleJump()) && !CanWallJump() && lastPressedJumpTime > 0)
         {
+
+            if (!CanJump() && CanDoubleJump())
+            {
+                hasDoubleJumped = true;
+            }
+            
             IsJumping = true;
             IsWallJumping = false;
             IsJumpCut = false;
@@ -355,7 +372,7 @@ public class PlayerMovement : MonoBehaviour
         lastPressedJumpTime = 0;
         lastOnGroundTime = 0;
 
-        sounds[0].Play();
+
 
         //We increase the force applied if we are falling
         //This means we'll always feel like we jump the same amount 
@@ -365,6 +382,8 @@ public class PlayerMovement : MonoBehaviour
             force -= rb.velocity.y;
 
         rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+        
+        sounds[0].Play();
     }
 
     private void WallJump(int dir)
@@ -433,6 +452,11 @@ public class PlayerMovement : MonoBehaviour
         return lastOnGroundTime > 0 && !IsJumping;
     }
 
+    private bool CanDoubleJump()
+    {
+        return (IsJumping || isJumpFalling) && !hasDoubleJumped && gameState.canDoubleJump;
+    }
+    
     private bool CanWallJump()
     {
         return lastPressedJumpTime > 0 && lastOnWallTime > 0 && lastOnGroundTime <= 0 && (!IsWallJumping ||

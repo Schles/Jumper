@@ -10,6 +10,7 @@ public class GameState : MonoBehaviour
     public int lastFruitsCollected = 0;
     public string lastReason;
 
+    public bool canDoubleJump = false;
 
     public static GameState Instance;
 

@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bae0d4b41e4199f44b31d22f527c11ac, type: 3}
-  m_Name: SuperMeatBoy
+  m_Name: PlayerData_Test
   m_EditorClassIdentifier: 
-  gravityStrength: -40
-  gravityScale: 2
-  fallGravityMult: 1.9
+  gravityStrength: -10
+  gravityScale: 1.0193679
+  fallGravityMult: 1
   maxFallSpeed: 30
   fastFallGravityMult: 5
   maxFastFallSpeed: 150
   runMaxSpeed: 14
   runAcceleration: 8
   runAccelAmount: 28.571428
-  runDecceleration: 24
-  runDeccelAmount: 85.71429
-  accelInAir: 0.155
+  runDecceleration: 14
+  runDeccelAmount: 50
+  accelInAir: 0.027
   deccelInAir: 0.016
   doConserveMomentum: 1
-  doFriction: 0
+  doFriction: 1
   frictionAmount: 0.2
   jumpHeight: 5
-  jumpTimeToApex: 0.5
-  jumpForce: 20
+  jumpTimeToApex: 1
+  jumpForce: 10
   jumpCutGravityMult: 2
   jumpHangGravityMult: 1
-  jumpHangTimeThreshold: 1
-  jumpHangAccelerationMult: 0.1
-  jumpHangMaxSpeedMult: 5
-  wallJumpForce: {x: 20, y: 20}
+  jumpHangTimeThreshold: 5
+  jumpHangAccelerationMult: 1
+  jumpHangMaxSpeedMult: 1
+  wallJumpForce: {x: 9, y: 8}
   wallJumpRunLerp: 1
-  wallJumpTime: 0.082
+  wallJumpTime: 1.5
   doTurnOnWallJump: 1
-  slideSpeed: -5
-  slideAccel: 5
-  coyoteTime: 0.106
+  slideSpeed: 0
+  slideAccel: 0
+  coyoteTime: 0.013
   jumpInputBufferTime: 0.018
