@@ -25,7 +25,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Post Processing
   - 
   - 
   - 
@@ -48,6 +48,9 @@ TagManager:
   - name: Near Background
     uniqueID: 2340574101
     locked: 0
+  - name: Tile Background
+    uniqueID: 298657179
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
@@ -57,7 +60,7 @@ TagManager:
   - name: Trap
     uniqueID: 501837859
     locked: 0
-  - name: Ground
+  - name: Tile Foreground
     uniqueID: 4002336943
     locked: 0
   - name: Enemy
