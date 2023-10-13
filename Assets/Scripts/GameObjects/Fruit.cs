@@ -1,14 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Fruit : MonoBehaviour
+public class Fruit : MonoBehaviour, IDataPersistance
 {
+    [SerializeField] private string id;
     
-    public static event Action<GameObject> OnFruitCollectedAction;
-    
+    [ContextMenu("Set ID")]
+    private void GenrateGuid()
+    {
+        id = Guid.NewGuid().ToString();
+    }
+
+
+    private Animator animator;
+
     private AudioSource audioSource;
 
     private bool hasBeenCollected = false; 
@@ -17,6 +25,18 @@ public class Fruit : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+
+        var levelName = SceneManager.GetActiveScene().name;
+        if (GameProgress.levelProgress[levelName].collectedFruits.ContainsKey(id))
+        {
+            hasBeenCollected = GameProgress.levelProgress[levelName].collectedFruits[id];
+        }
+
+        if (hasBeenCollected)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -30,9 +50,34 @@ public class Fruit : MonoBehaviour
         if (!hasBeenCollected && other.gameObject.CompareTag("Player"))
         {
             hasBeenCollected = true;
-            OnFruitCollectedAction.Invoke(gameObject);
+            animator.SetBool("IsCollected", true);
+            EventManager.TriggerEvent("collectedFruit", new Dictionary<string, object> { { "gameObject", gameObject } });
+            var levelName = SceneManager.GetActiveScene().name;
+            GameProgress.levelProgress[levelName].collectedFruits.Add(id, true);
+
             audioSource.Play();
             
         }
     }
+
+    public void LoadGame(GameData data)
+    {
+        data.collectedFruits.TryGetValue(id, out hasBeenCollected);
+        if(hasBeenCollected) {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SaveGame(ref GameData data)
+    {
+        if (data.collectedFruits.ContainsKey(id))
+        {
+            data.collectedFruits.Remove(id);
+        }
+        
+        
+        data.collectedFruits.Add(id, hasBeenCollected);
+        
+    }
+
 }

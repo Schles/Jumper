@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IDataPersistance
 {
 
 
-    public PlayerData Data;
+    public PlayerMovementData Data;
 
     AudioSource[] sounds;
 
@@ -52,9 +52,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float lastPressedJumpTime = 0f;
 
-    public bool hasDoubleJumped = false;
+    public bool hasDoubleJumpedPressed = false;
 
-    private GameState gameState;
+    public bool canDoubleJump = false;
 
     public void Awake()
     {
@@ -74,8 +74,6 @@ public class PlayerMovement : MonoBehaviour
 
         rb.gravityScale = Data.gravityScale;
         IsFacingRight = true;
-
-        gameState = GameState.Instance;
 
     }
 
@@ -184,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
             if (!IsJumping)
             {
                 isJumpFalling = false;
-                hasDoubleJumped = false;
+                hasDoubleJumpedPressed = false;
             }
         }
 
@@ -197,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (!CanJump() && CanDoubleJump())
             {
-                hasDoubleJumped = true;
+                hasDoubleJumpedPressed = true;
             }
             
             IsJumping = true;
@@ -454,7 +452,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanDoubleJump()
     {
-        return (IsJumping || isJumpFalling) && !hasDoubleJumped && gameState.canDoubleJump;
+        return (IsJumping || isJumpFalling) && !hasDoubleJumpedPressed && canDoubleJump;
     }
     
     private bool CanWallJump()
@@ -482,4 +480,15 @@ public class PlayerMovement : MonoBehaviour
             return false;
                 
     }
+
+    public void LoadGame(GameData data)
+    {
+        canDoubleJump = data.canDoubleJump;
+    }
+
+    public void SaveGame(ref GameData data)
+    {
+        data.canDoubleJump = canDoubleJump;
+    }
+
 }

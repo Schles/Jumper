@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7376519188979605413}
   - component: {fileID: 788475770430990757}
   - component: {fileID: 4190422784219566089}
+  - component: {fileID: 1587822037084519406}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Goal
@@ -172,3 +173,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1587822037084519406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4694060941418770159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c93e9174e0780e44a12a030a5bbafad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextScene: 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -10,10 +11,6 @@ public class Player : MonoBehaviour
 
 
     AudioSource[] sounds;
-
-    public static event Action<string> OnGameOverAction;
-    public static event Action<string> OnGameWonAction;
-
 
     public bool isDead = false;
 
@@ -24,6 +21,16 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         sounds = GetComponents<AudioSource>();
+    }
+
+    void OnEnable()
+    {
+        EventManager.StartListening("restart", OnRestart);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening("restart", OnRestart);
     }
 
     // Update is called once per frame
@@ -38,9 +45,10 @@ public class Player : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Goal":
-                sounds[2].Play();
-                GameState.Instance.canDoubleJump = true;
-                //OnGameWonAction.Invoke("Gewonnen! Gratuliere :)");
+                //sounds[2].Play();
+                //GetComponent<PlayerMovement>().canDoubleJump = true;
+                
+                EventManager.TriggerEvent("finish", new Dictionary<string, object>{});
                 break;
         }
     }
@@ -53,10 +61,18 @@ public class Player : MonoBehaviour
             case "Trap":
                 this.isDead = true;
                 sounds[1].Play();
-                OnGameOverAction.Invoke("dead");
+
                 break;
 
         }
 
+    }
+
+    private void OnRestart(Dictionary<string, object> message)
+    {
+        this.isDead = false;
+        transform.position = (Vector3) message["spawnPoint"];
+        animator.Rebind();
+        animator.Update(0f);
     }
 }

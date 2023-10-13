@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="wrapper" style="flex-grow: 1; border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-left-color: rgba(165, 2, 2, 0); border-right-color: rgba(165, 2, 2, 0); border-top-color: rgba(165, 2, 2, 0); border-bottom-color: rgba(165, 2, 2, 0);">
+        <ui:Label tabindex="-1" text="Level 1" display-tooltip-when-elided="true" name="levelName" style="color: rgb(255, 0, 0);" />
+        <ui:VisualElement name="bestTime" style="flex-grow: initial; background-color: rgba(0, 0, 0, 0); flex-direction: row; color: rgb(255, 255, 255);">
+            <ui:Label tabindex="-1" text="Beste Zeit:" display-tooltip-when-elided="true" name="bestTimeLabel" style="height: 25px; width: 81px;" />
+            <ui:Label tabindex="-1" text="00:00:00" display-tooltip-when-elided="true" name="bestTimeValue" />
+        </ui:VisualElement>
+        <ui:VisualElement name="fruits" style="flex-grow: initial; background-color: rgba(0, 0, 0, 0); flex-direction: row; color: rgb(255, 255, 255);">
+            <ui:Label tabindex="-1" text="Früchte" display-tooltip-when-elided="true" name="fruitsLabel" style="height: 25px; width: 81px;" />
+            <ui:Label tabindex="-1" text="0" display-tooltip-when-elided="true" name="fruitsValue" />
+            <ui:Label tabindex="-1" text="/ 3" display-tooltip-when-elided="true" name="fruitsMax" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

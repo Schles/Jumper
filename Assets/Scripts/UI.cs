@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour, IDataPersistance
 {
 
+    public float gameTime = 0;
+    private int deathCount = 0;
+    private int fruitsCollected = 0;
     private GameController gameController;
     private Label labelGameTime;
-    private Label labelBestTime;
-    private Label labelLastTime;
     private Label labelLastReason;
     private Label labelFruits;
+
+
 
 
     // Start is called before the first frame update
@@ -30,24 +33,45 @@ public class UI : MonoBehaviour
             return;
         }
         */
+   
+        if (labelFruits != null) {
+            labelFruits.text = fruitsCollected.ToString() + " Fruit(s)";
+        } else {
+            //Debug.Log("missing UI.labelFruits");
+        }
+        
+        if (labelGameTime != null) {
+            labelGameTime.text = gameTimeToHumanTime(gameController.gameTime);
+        } else {
+            //Debug.Log("missing UI.labelGameTime");
+        }
+        
+    }
 
-        string doubleJump = GameState.Instance.canDoubleJump ? " | Double Jump enabled" : "";
-        
-        labelFruits.text = gameController.fruitsCollected.ToString() + " Fruit(s)" + doubleJump;
-        
-        labelGameTime.text =  gameTimeToHumanTime(gameController.gameTime);
-        labelLastReason.text = GameState.Instance.lastReason;
+    private void FixedUpdate()
+    {
+        gameTime += Time.deltaTime;
     }
 
     private void OnEnable()
     {
 
+        EventManager.StartListening("gameOver", OnGameOver);
+        EventManager.StartListening("collectedFruit", OnFruitCollected);
+        
         gameController = GameObject.FindFirstObjectByType<GameController>();
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         labelGameTime = root.Q<Label>("gameTime");
         labelLastReason = root.Q<Label>("lastReason");
         labelFruits = root.Q<Label>("fruits");
+    }
+
+    
+    public void OnDisable()
+    {
+        EventManager.StopListening("gameOver", OnGameOver);
+        EventManager.StopListening("collectedFruit", OnFruitCollected);
     }
 
     private string gameTimeToHumanTime(float gameTime)
@@ -74,5 +98,31 @@ public class UI : MonoBehaviour
         {
             return number.ToString();
         }
+    }
+
+    public void LoadGame(GameData data)
+    {
+        this.fruitsCollected = data.fruitsCollected;
+        this.deathCount = data.deathCount;
+        this.gameTime = data.gameTime;
+    }
+
+    public void SaveGame(ref GameData data)
+    {
+        data.fruitsCollected = this.fruitsCollected;
+        data.deathCount = this.deathCount;
+        data.gameTime = this.gameTime;
+    }
+
+    
+    public void OnFruitCollected(Dictionary<string, object> message)
+    {
+        fruitsCollected++;
+    }
+
+    
+    private void OnGameOver(Dictionary<string, object> message)
+    {
+        deathCount++;
     }
 }

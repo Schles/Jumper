@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae0d4b41e4199f44b31d22f527c11ac, type: 3}
   m_Name: SuperMeatBoy
   m_EditorClassIdentifier: 
-  gravityStrength: -40
-  gravityScale: 4.0774717
+  gravityStrength: -32
+  gravityScale: 3.2619774
   fallGravityMult: 1.9
   maxFallSpeed: 30
   fastFallGravityMult: 5
@@ -28,9 +28,9 @@ MonoBehaviour:
   doConserveMomentum: 1
   doFriction: 0
   frictionAmount: 0.2
-  jumpHeight: 5
+  jumpHeight: 4
   jumpTimeToApex: 0.5
-  jumpForce: 20
+  jumpForce: 16
   jumpCutGravityMult: 2
   jumpHangGravityMult: 1
   jumpHangTimeThreshold: 1

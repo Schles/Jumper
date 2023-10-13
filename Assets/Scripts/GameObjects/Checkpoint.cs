@@ -3,16 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Checkpoint : MonoBehaviour
+public class Checkpoint : MonoBehaviour, IDataPersistance
 {
+    [SerializeField] private string id;
 
-    private GameController gameController;
-    public bool active = false;
+    public static Checkpoint active;
+    public bool IsActive = false;
     
+    private bool visitied = false;
+
+    [ContextMenu("Set ID")]
+    private void GenrateGuid()
+    {
+        id = Guid.NewGuid().ToString();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        gameController = GameObject.FindAnyObjectByType<GameController>();
         GetComponent<Animator>().StopPlayback();
     }
 
@@ -24,14 +32,14 @@ public class Checkpoint : MonoBehaviour
 
     public void Activate()
     {
-        this.active = true;
+        this.IsActive = true;
         GetComponent<Animator>().StartPlayback();
         GetComponent<AudioSource>().Play();
     }
 
     public void Deactivate()
     {
-        this.active = false;
+        this.IsActive = false;
         GetComponent<Animator>().StopPlayback();
         
     }
@@ -39,18 +47,48 @@ public class Checkpoint : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (gameController.activeCheckpoint == this)
+        if (Checkpoint.active == this)
         {
             return;
         }
         
-        if (gameController.activeCheckpoint)
+        if (Checkpoint.active)
         {
-            gameController.activeCheckpoint.Deactivate();
+            Checkpoint.active.Deactivate();
         }
         
-        gameController.activeCheckpoint = this;
+        Checkpoint.active = this;
         
         this.Activate();
     }
+
+    
+    public void LoadGame(GameData data)
+    {
+        data.checkpoints.TryGetValue(id, out visitied);
+        if (data.activeCheckpointId.Equals(id))
+        {
+            Checkpoint.active = this;
+            this.Activate();
+        }
+    }
+
+    public void SaveGame(ref GameData data)
+    {
+        if (data.checkpoints.ContainsKey(id))
+        {
+            data.checkpoints.Remove(id);
+        }
+        
+        data.checkpoints.Add(id, visitied);
+
+        if (Checkpoint.active == this)
+        {
+            data.activeCheckpointId = id;
+        }
+        
+        
+        
+    }
+
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Parallax : MonoBehaviour
+public class ParallaxMovement : MonoBehaviour
 {
 
     Material mat;
