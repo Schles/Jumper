@@ -11,7 +11,7 @@ public class GatedByButton : MonoBehaviour
 
     private Animator animator;
 
-    private Collider2D collider2D;
+    private Collider2D col2D;
 
     public bool IsOpen = false;
 
@@ -19,7 +19,7 @@ public class GatedByButton : MonoBehaviour
 
         animator = GetComponent<Animator>();
         buttonStates = new Dictionary<string, bool>();        
-        collider2D = GetComponent<Collider2D>();
+        col2D = GetComponent<Collider2D>();
                 
         for (var i = 0; i < transform.childCount; i++) {
             var child = transform.GetChild(i).GetComponent<Button>();
@@ -44,7 +44,7 @@ public class GatedByButton : MonoBehaviour
 
         IsOpen = CheckAllButtonActive();
         animator.SetBool("IsOpen", IsOpen);
-        collider2D.enabled = !IsOpen;
+        col2D.enabled = !IsOpen;
         print("isGated " + !IsOpen);
     }
 

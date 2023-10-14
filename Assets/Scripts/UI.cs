@@ -12,7 +12,6 @@ public class UI : MonoBehaviour, IDataPersistance
     private int fruitsCollected = 0;
     private GameController gameController;
     private Label labelGameTime;
-    private Label labelLastReason;
     private Label labelFruits;
 
 
@@ -63,7 +62,6 @@ public class UI : MonoBehaviour, IDataPersistance
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         labelGameTime = root.Q<Label>("gameTime");
-        labelLastReason = root.Q<Label>("lastReason");
         labelFruits = root.Q<Label>("fruits");
     }
 

@@ -12,7 +12,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance {
         get {
         if (!soundManager) {
-            soundManager = FindObjectOfType(typeof(SoundManager)) as SoundManager;
+            soundManager = FindFirstObjectByType(typeof(SoundManager)) as SoundManager;
 
             if (!soundManager) {
             Debug.LogError("There needs to be one active SoundManager script on a GameObject in your scene.");

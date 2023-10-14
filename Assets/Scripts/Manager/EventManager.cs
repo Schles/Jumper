@@ -13,16 +13,15 @@ public class EventManager : MonoBehaviour
     public static EventManager Instance {
         get {
         if (!eventManager) {
-            eventManager = FindObjectOfType(typeof(EventManager)) as EventManager;
+            eventManager = FindFirstObjectByType(typeof(EventManager)) as EventManager;
 
             if (!eventManager) {
             Debug.LogError("There needs to be one active EventManager script on a GameObject in your scene.");
             } else {
-              Debug.Log("Found EventManager");
               eventManager.Init();
 
               //  Sets this to not be destroyed when reloading scene
-              DontDestroyOnLoad(eventManager);
+              //DontDestroyOnLoad(eventManager);
             }
         }
         return eventManager;

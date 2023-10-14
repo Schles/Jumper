@@ -37,9 +37,6 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
     public bool IsJumping = false;
     public bool IsSliding = false;
     public bool IsJumpCut = false;
-    private bool jumpInputReleased = false;
-
-
     public float lastOnGroundTime = 0f;
     public float lastOnWallTime = 0f;
 
@@ -56,6 +53,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
     public bool canDoubleJump = false;
 
+    private HingeJoint2D grapper;
+
     public void Awake()
     {
         // assign a callback for the "jump" action.
@@ -69,6 +68,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GetComponent<Player>();
+        grapper = GetComponent<HingeJoint2D>();
 
         sounds = GetComponents<AudioSource>();
 
@@ -188,7 +188,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
  
 
-
+        print("isHanging " + grapper.enabled);
         // Jump
         if( (CanJump() || CanDoubleJump()) && !CanWallJump() && lastPressedJumpTime > 0)
         {
@@ -214,6 +214,18 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
             lastWallJumpDir = (lastOnWallRightTime > 0) ? -1 : 1;
 
             WallJump(lastWallJumpDir);
+        } 
+        else if (grapper.enabled && lastPressedJumpTime > 0)
+        {
+            IsWallJumping = true;
+            IsJumping = false;
+            IsJumpCut = false;
+            isJumpFalling = false;
+            wallJumpStartTime = Time.time;
+            lastWallJumpDir = (transform.localScale.x < 0) ? -1 : 1;
+            
+
+            RopeJump(lastWallJumpDir);
         }
 
         
@@ -351,7 +363,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
         return false;
     }
-    
+
+
     private void SetAnimatorParams()
     {
         animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
@@ -365,7 +378,6 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
     }
     private void Jump()
     {
-
         //Ensures we can't call Jump multiple times from one press
         lastPressedJumpTime = 0;
         lastOnGroundTime = 0;
@@ -384,8 +396,38 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         sounds[0].Play();
     }
 
+    private void RopeJump(int dir)
+    {
+        print("Wall Jum");
+        //Ensures we can't call Wall Jump multiple times from one press
+        lastPressedJumpTime = 0;
+        lastOnGroundTime = 0;
+        lastOnWallRightTime = 0;
+        lastOnWallLeftTime = 0;
+
+        sounds[0].Play();
+
+        Vector2 force = new Vector2(Data.wallJumpForce.x, Data.wallJumpForce.y);
+        
+        force.x *= dir; //apply force in opposite direction of wall
+
+        if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
+            force.x -= rb.velocity.x;
+
+        if (rb.velocity.y < 0) //checks whether player is falling, if so we subtract the velocity.y (counteracting force of gravity). This ensures the player always reaches our desired jump force or greater
+            force.y -= rb.velocity.y;
+
+        //Unlike in the run we want to use the Impulse mode.
+        //The default mode will apply are force instantly ignoring masss
+        rb.AddForce(force, ForceMode2D.Impulse);
+
+        grapper.connectedBody.GetComponent<Rigidbody2D>().AddForce(force * -0.1f, ForceMode2D.Impulse);
+        grapper.GetComponent<Grappler>().Decouple();
+    }
+
     private void WallJump(int dir)
     {
+        print("Wall Jumo");
         //Ensures we can't call Wall Jump multiple times from one press
         lastPressedJumpTime = 0;
         lastOnGroundTime = 0;

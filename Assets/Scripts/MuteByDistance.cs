@@ -13,7 +13,7 @@ public class SoundByDistance : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Listener = FindObjectOfType<AudioListener>().transform;
+        Listener = FindFirstObjectByType<AudioListener>().transform;
         source = GetComponent<AudioSource>();
         if (!source) return;
  

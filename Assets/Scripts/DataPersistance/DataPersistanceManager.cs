@@ -32,9 +32,10 @@ public class DataPersistanceManager : MonoBehaviour
    
     private List<IDataPersistance> FindAllDataPersistanceObjects()
     {
-        IEnumerable<IDataPersistance> gameObjects = GameObject.FindObjectsOfType(typeof(MonoBehaviour)).OfType<IDataPersistance>();
+        //IEnumerable<IDataPersistance> gameObjects = GameObject.FindObjectsOfType(typeof(MonoBehaviour)).OfType<IDataPersistance>();
+        var gameObjects = FindObjectsByType(typeof(IDataPersistance), FindObjectsSortMode.None);;
 
-        return new List<IDataPersistance>(gameObjects);
+        return new List<IDataPersistance>((IEnumerable<IDataPersistance>)gameObjects);
     }
 
 

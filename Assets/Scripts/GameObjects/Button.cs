@@ -21,8 +21,6 @@ public class Button : MonoBehaviour
         id = Guid.NewGuid().ToString();
     }
 
-    public event Action<bool> OnStateChange;
-
     private Animator animator;
 
     // Start is called before the first frame update

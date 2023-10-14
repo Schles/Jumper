@@ -14,7 +14,6 @@ public class LevelLoader1 : MonoBehaviour
     void Awake() {
 
         var levelName = SceneManager.GetActiveScene().name;
-        print("MyScene " + levelName);
 
         if (!GameProgress.levelProgress.ContainsKey(levelName)) {
             GameProgress.levelProgress.Add(levelName, new LevelProgress());

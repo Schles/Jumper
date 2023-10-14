@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour, IDataPersistance
 {
     public InputAction resetAction;
 
+    public InputAction menuAction;
+
     public float gameTime = 0;
 
 
@@ -16,6 +18,7 @@ public class GameController : MonoBehaviour, IDataPersistance
     {
         // assign a callback for the "jump" action.
         resetAction.performed += ctx => { OnReset(ctx); };
+        menuAction.performed += ctx => { OnMenu(ctx); };
     }
 
     // Start is called before the first frame update
@@ -35,6 +38,7 @@ public class GameController : MonoBehaviour, IDataPersistance
     public void OnEnable()
     {
         resetAction.Enable();
+        menuAction.Enable();
         EventManager.StartListening("gameOver", OnGameOver);
         EventManager.StartListening("finish", OnFinish);
     }
@@ -42,6 +46,7 @@ public class GameController : MonoBehaviour, IDataPersistance
     public void OnDisable()
     {
         resetAction.Disable();
+        menuAction.Disable();
         EventManager.StopListening("gameOver", OnGameOver);
         EventManager.StopListening("finish", OnFinish);
     }
@@ -55,6 +60,11 @@ public class GameController : MonoBehaviour, IDataPersistance
     public void OnReset(InputAction.CallbackContext context)
     {
         Reset();
+    }
+
+    public void OnMenu(InputAction.CallbackContext context)
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void OnFinish(Dictionary<string, object> message) 

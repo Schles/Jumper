@@ -47,7 +47,6 @@ public class LevelSelectUI : MonoBehaviour
     }
 
     public void LoadLevel(string level) {
-        print("load " + level);
         SceneManager.LoadScene(level);
     }
 

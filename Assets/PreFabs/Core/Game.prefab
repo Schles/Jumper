@@ -65,7 +65,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2464150091839262026
 Transform:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileName: data.txt
-  persistentData: 1
+  persistentData: 0
 --- !u!1 &1889472757334006767
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +547,7 @@ MonoBehaviour:
       m_Action: Reset
       m_Flags: 0
     m_Flags: 0
+  gameTime: 0
 --- !u!1 &4784934065683419433
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0f82934cb8cba49a9f2199e3cceadc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: Level1
   animator: {fileID: 6282159142989134223}
 --- !u!1 &8606132797176156070
 GameObject:
