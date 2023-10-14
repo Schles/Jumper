@@ -141,6 +141,7 @@ public class Grappler : MonoBehaviour
             ropeBone.GetComponent<RopeSegment>().isPlayerAttached = true;
             hingeJoint2D.connectedBody = ropeBone;
             hingeJoint2D.enabled = true;
+            hingeJoint2D.connectedAnchor =  ropeBone.transform.InverseTransformPoint(transform.position);
             attached = true;
             attachedTo = ropeBone.gameObject.transform.parent;
     }
@@ -166,25 +167,62 @@ public class Grappler : MonoBehaviour
     public void Slide(int direction) {
         RopeSegment myConnection = hingeJoint2D.connectedBody.gameObject.GetComponent<RopeSegment>();
         GameObject newSeg = null;
+
+        var speed = 0.1f;
+
         if( direction > 0) {
-            if(myConnection.connectedAbove != null) {
-                if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null) {
-                    newSeg = myConnection.connectedAbove;
+
+            
+            hingeJoint2D.connectedAnchor = new Vector2(0f, hingeJoint2D.connectedAnchor.y + direction * speed);
+
+            if ( hingeJoint2D.connectedAnchor.y > 1f) {
+                if(myConnection.connectedAbove != null) {
+                    if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null) {
+                        newSeg = myConnection.connectedAbove;
+                        
+
+
+                        myConnection.isPlayerAttached = false;
+                        newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
+
+                        if (myConnection.connectedBelow == null) {
+                            hookEntity.GetComponent<Hook>().RemoveSegment();    
+                        }
+
+                        hingeJoint2D.connectedBody = newSeg.GetComponent<Rigidbody2D>();
+                        hingeJoint2D.connectedAnchor = new Vector2(0f, 0f);
+                    }
+                } else {
+                    hingeJoint2D.connectedAnchor = new Vector2(0f, 1f);
                 }
             }
         } else {
-            if(myConnection.connectedBelow != null) {         
-                newSeg = myConnection.connectedBelow;
+            hingeJoint2D.connectedAnchor = new Vector2(0f, hingeJoint2D.connectedAnchor.y + direction * speed);
+
+            if (hingeJoint2D.connectedAnchor.y < 0f) {
+
+                if( myConnection.connectedBelow == null) {
+                    hookEntity.GetComponent<Hook>().AddSegment();
+                }
+
+                if(myConnection.connectedBelow != null) {         
+                    newSeg = myConnection.connectedBelow;
+
+                    myConnection.isPlayerAttached = false;
+                    newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
+                    hingeJoint2D.connectedBody = newSeg.GetComponent<Rigidbody2D>();
+                    hingeJoint2D.connectedAnchor = new Vector2(0f, 1f);
+                } 
             }
         }
+print("pos" + hingeJoint2D.connectedAnchor);
+        // if (newSeg != null) {
+        //     //transform.position = newSeg.transform.position;
+        //     myConnection.isPlayerAttached = false;
+        //     newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
+        //     hingeJoint2D.connectedBody = newSeg.GetComponent<Rigidbody2D>();
 
-        if (newSeg != null) {
-            transform.position = newSeg.transform.position;
-            myConnection.isPlayerAttached = false;
-            newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
-            hingeJoint2D.connectedBody = newSeg.GetComponent<Rigidbody2D>();
-
-        }
+        // }
     }
 
     private float lastTimeOnRope = 0f;

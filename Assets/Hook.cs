@@ -29,17 +29,10 @@ public class Hook : MonoBehaviour
         distanceTraveled += rb.velocity.magnitude * Time.deltaTime;
         segmentLength += rb.velocity.magnitude * Time.deltaTime;
 
-        const float scale = 1f;
 
-        if (segmentLength > scale && distanceTraveled < maxDistance && rb.isKinematic == false) {
-            var go = Instantiate(ropeSegment, curParent.transform.position + Vector3.down, Quaternion.identity);
-
-            Vector3 theScale = go.transform.localScale;
-            theScale.y = scale;
-            go.transform.localScale = theScale;
-            go.transform.parent = transform.transform;
-            go.GetComponent<HingeJoint2D>().connectedBody = curParent;
-            curParent = go.GetComponent<Rigidbody2D>();
+        if (segmentLength > 1f && distanceTraveled < maxDistance && rb.isKinematic == false) {
+            
+            AddSegment();
 
             
 
@@ -51,6 +44,21 @@ public class Hook : MonoBehaviour
         //rb.velocity = Vector2.up * 4f;
 
 
+    }
+
+    public void AddSegment() {
+        var pos = curParent.transform.position + Vector3.down;
+        var go = Instantiate(ropeSegment, pos, Quaternion.identity);
+
+        go.transform.parent = transform.transform;
+        go.GetComponent<HingeJoint2D>().connectedBody = curParent;
+        curParent = go.GetComponent<Rigidbody2D>();
+    }
+
+    public void RemoveSegment() {
+        var newParent = curParent.GetComponent<HingeJoint2D>().connectedBody;
+        Destroy(curParent.gameObject);
+        curParent = newParent;
     }
 
     private void OnCollisionEnter2D(Collision2D other) {

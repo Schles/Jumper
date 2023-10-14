@@ -282,6 +282,10 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         else if (IsOnRope() && moveInput.y != 0f) {
             grappler.Slide((int)moveInput.y);
         }
+
+        if (IsOnRope()) {
+            print("connected point " + hingeJoint2D.connectedAnchor);    
+        }
     }
 
     private void Run(float lerpAmount)
