@@ -31,27 +31,42 @@ public class Grappler : MonoBehaviour
     public float maxDistance = 100f;
 
 
-    public bool isHolding = false;
+    public bool attached = false;
+
+    public Transform attachedTo;
+
+    public GameObject disregard;
 
     public bool hasShoot = false;
 
     public GameObject curCollision;
 
+    public Transform[] groundCheckPoint;
+
+    public LayerMask ropeLayer;
+
+    
+
+
+
+    private Vector2 _ropeCheckSize = new Vector2(0.5f, 1f);
+
     void Awake() {
+        
         removeAction.performed += ctx => { OnRelease(ctx); };
-        holdAction.performed += ctx => { OnHold(ctx); };
-        holdAction.canceled += ctx => { OnHoldRelease(ctx); };
+        //holdAction.performed += ctx => { OnHold(ctx); };
+        //holdAction.canceled += ctx => { OnHoldRelease(ctx); };
     }
 
     private void OnHoldRelease(InputAction.CallbackContext ctx)
     {
-        this.isHolding = false;
+        this.attached = false;
     }
 
 
     private void OnHold(InputAction.CallbackContext ctx)
     {
-        this.isHolding = true;
+        this.attached = true;
     }
 
 
@@ -81,17 +96,6 @@ public class Grappler : MonoBehaviour
 
         var aimAmount = aimAction.ReadValue<Vector2>();
         if (hasShoot == false && aimAmount.magnitude > 0.1f) {
-            //var cast =  Physics2D.Raycast(transform.position, transform.TransformDirection(aimAmount), maxDistance, LayerMask.GetMask("Ground"));
-            //if(cast) {
-                //springJoint2D.enabled = true;
-                //lineRenderer.enabled = true;
-
-            //    var go = this.DrawRope(cast.point);
-                // hingeJoint2D.connectedBody = go.GetComponent<Rigidbody2D>();
-                // hingeJoint2D.enabled = true;
-               
-           // }
-
             if (hookEntity != null) {
                 Destroy(hookEntity);
                 hookEntity = null;
@@ -113,17 +117,43 @@ public class Grappler : MonoBehaviour
         //     lineRenderer.SetPosition(1, hookEntity.transform.position);            
         // }
 
-        lastTimeOnRope -= Time.deltaTime;
-        if (isHolding && curCollision != null && lastTimeOnRope < 0f) {
-            hingeJoint2D.enabled = true;
-            hingeJoint2D.connectedBody = curCollision.GetComponent<Rigidbody2D>();
-        } else if (isHolding == false) {
-            hingeJoint2D.enabled = false;
+    print("holding" + holdAction.IsPressed());
+        var collision = Physics2D.OverlapBox(groundCheckPoint[0].position, _ropeCheckSize, 0, ropeLayer);
+
+        if (!attached && collision && holdAction.IsPressed()) {
+            Attach(collision.GetComponent<Rigidbody2D>());
+        } else if (attached && !holdAction.IsPressed()) {
+            Detach();
         }
+
+        lastTimeOnRope -= Time.deltaTime;
+        // if (attached && curCollision != null && lastTimeOnRope < 0f) {
+        //     hingeJoint2D.enabled = true;
+        //     hingeJoint2D.connectedBody = curCollision.GetComponent<Rigidbody2D>();
+        // } else if (attached == false) {
+        //     hingeJoint2D.enabled = false;
+        //     curCollision = null;
+        // }
+    }
+
+
+    public void Attach(Rigidbody2D ropeBone) {
+            ropeBone.GetComponent<RopeSegment>().isPlayerAttached = true;
+            hingeJoint2D.connectedBody = ropeBone;
+            hingeJoint2D.enabled = true;
+            attached = true;
+            attachedTo = ropeBone.gameObject.transform.parent;
+    }
+
+    public void Detach() {
+        hingeJoint2D.connectedBody.gameObject.GetComponent<RopeSegment>().isPlayerAttached = false;
+        attached = false;
+        hingeJoint2D.enabled = false;
+        hingeJoint2D.connectedBody = null;
     }
 
     public bool IsHanging() {
-        return isHolding && curCollision != null;
+        return attached && curCollision != null;
     }
     
     public void Decouple() {
@@ -131,6 +161,30 @@ public class Grappler : MonoBehaviour
         curCollision = null;
 
         lastTimeOnRope = 0.5f;
+    }
+
+    public void Slide(int direction) {
+        RopeSegment myConnection = hingeJoint2D.connectedBody.gameObject.GetComponent<RopeSegment>();
+        GameObject newSeg = null;
+        if( direction > 0) {
+            if(myConnection.connectedAbove != null) {
+                if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null) {
+                    newSeg = myConnection.connectedAbove;
+                }
+            }
+        } else {
+            if(myConnection.connectedBelow != null) {         
+                newSeg = myConnection.connectedBelow;
+            }
+        }
+
+        if (newSeg != null) {
+            transform.position = newSeg.transform.position;
+            myConnection.isPlayerAttached = false;
+            newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
+            hingeJoint2D.connectedBody = newSeg.GetComponent<Rigidbody2D>();
+
+        }
     }
 
     private float lastTimeOnRope = 0f;
@@ -180,15 +234,28 @@ public class Grappler : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Rope") && curCollision == null) {
+    private void OnTriggerEnter2D(Collider2D other) {
+        // if(!attached) {
+        //     if(other.gameObject.CompareTag("Rope")) {
+        //         if (attachedTo != other.gameObject.transform.parent) {
+        //             if (disregard == null || other.gameObject.transform.parent.gameObject != disregard) {
+        //                 print("Attaching");
+        //                 Attach(other.gameObject.GetComponent<Rigidbody2D>());
+        //             }
+                    
+        //         }
+        //     }
+        // }
+
+        if (other.gameObject.CompareTag("Rope")) {
             curCollision = other.gameObject;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Rope") && curCollision == other.gameObject) {
-            curCollision = null;
-        }
+    private void OnTriggerExit2D(Collider2D other) {
+        // if (other.gameObject.CompareTag("Rope") && curCollision == other.gameObject) {
+        //     curCollision = null;
+        // }
     }
+
 }

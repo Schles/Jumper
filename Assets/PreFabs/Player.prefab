@@ -134,6 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8125742849053401860}
   - component: {fileID: 256607787768812623}
+  - component: {fileID: 5224075825915896117}
   - component: {fileID: 6131256664915679869}
   - component: {fileID: 2204237982059339470}
   - component: {fileID: 593905635284219479}
@@ -145,7 +146,6 @@ GameObject:
   - component: {fileID: 5072464306965414020}
   - component: {fileID: 1042684639460525165}
   - component: {fileID: 7165442985054271466}
-  - component: {fileID: 8541345856464723321}
   - component: {fileID: 8819511931532882519}
   m_Layer: 0
   m_Name: Player
@@ -171,6 +171,7 @@ Transform:
   - {fileID: 7594274741864150918}
   - {fileID: 5253364957881980819}
   - {fileID: 2793454504243095768}
+  - {fileID: 6694181209182329888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &256607787768812623
@@ -275,6 +276,54 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Jump
       m_Flags: 0
+    m_Flags: 0
+  isJumpFalling: 0
+  IsWallJumping: 0
+  IsJumping: 0
+  IsSliding: 0
+  IsJumpCut: 0
+  lastOnGroundTime: 0
+  lastOnWallTime: 0
+  wallJumpStartTime: 0
+  lastPressedJumpTime: 0
+  hasDoubleJumpedPressed: 0
+  canDoubleJump: 0
+--- !u!114 &5224075825915896117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6897091800389361992}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c271849bb131df84a94e9121145b1f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data: {fileID: 0}
+  groundCheckPoint: []
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  frontWallCheckPoint: {fileID: 0}
+  backWallCheckPoint: {fileID: 0}
+  moveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: d80dbfb9-2cd7-4fbf-8d1a-fe188abf50d6
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  jumpAction:
+    m_Name: Jump
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fbfa1a1f-c4a4-4296-ac2e-188618174056
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
     m_Flags: 0
   isJumpFalling: 0
   IsWallJumping: 0
@@ -960,14 +1009,6 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Remove
       m_Flags: 0
-    - m_Name: 
-      m_Id: 62f2161a-34a7-482e-a377-634d9fc0ffed
-      m_Path: <Gamepad>/buttonEast
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Remove
-      m_Flags: 0
     m_Flags: 0
   holdAction:
     m_Name: Hold
@@ -978,16 +1019,32 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 190995ec-fa72-458a-a082-96f01208d8ed
-      m_Path: <Gamepad>/buttonWest
+      m_Id: b8cc2aeb-d761-491c-800f-8fee7010dddf
+      m_Path: <Keyboard>/shift
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Hold
       m_Flags: 0
     - m_Name: 
-      m_Id: b8cc2aeb-d761-491c-800f-8fee7010dddf
-      m_Path: <Keyboard>/shift
+      m_Id: 8b8c20aa-535c-4ac6-b665-6ca04e39e20b
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Hold
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 967a19bb-9c20-4e28-834e-58b0e4a05b05
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Hold
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c596f0bb-8ff6-48c8-bde5-2af66eab3691
+      m_Path: <Gamepad>/buttonWest
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -996,31 +1053,18 @@ MonoBehaviour:
     m_Flags: 0
   hook: {fileID: 6018322493696867823, guid: 879ab78a71e0e0149853497752abab79, type: 3}
   rope: {fileID: 6627460835601008617, guid: 712f0682cb44b874b9195a297af7e958, type: 3}
+  speed: 80
   maxDistance: 100
-  isHolding: 0
+  attached: 0
+  attachedTo: {fileID: 0}
+  disregard: {fileID: 0}
   hasShoot: 0
   curCollision: {fileID: 0}
---- !u!231 &8541345856464723321
-SpringJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6897091800389361992}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 1
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_BreakAction: 3
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 11.07, y: -0.84}
-  m_AutoConfigureDistance: 0
-  m_Distance: 10.812677
-  m_DampingRatio: 1
-  m_Frequency: 1
+  groundCheckPoint:
+  - {fileID: 6694181209182329888}
+  ropeLayer:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!233 &8819511931532882519
 HingeJoint2D:
   m_ObjectHideFlags: 0
@@ -1037,7 +1081,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 11.07, y: -0.84}
+  m_ConnectedAnchor: {x: 0, y: 0}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -1047,3 +1091,34 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 0
     m_UpperAngle: 359
+--- !u!1 &7397626915161368151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6694181209182329888}
+  m_Layer: 0
+  m_Name: RopeCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6694181209182329888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7397626915161368151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0452, y: -0.0046, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8125742849053401860}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

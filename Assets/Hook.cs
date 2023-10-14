@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Hook : MonoBehaviour
 {
@@ -26,11 +28,21 @@ public class Hook : MonoBehaviour
     {
         distanceTraveled += rb.velocity.magnitude * Time.deltaTime;
         segmentLength += rb.velocity.magnitude * Time.deltaTime;
-        if (segmentLength > 1f && distanceTraveled < maxDistance && rb.isKinematic == false) {
+
+        const float scale = 1f;
+
+        if (segmentLength > scale && distanceTraveled < maxDistance && rb.isKinematic == false) {
             var go = Instantiate(ropeSegment, curParent.transform.position + Vector3.down, Quaternion.identity);
+
+            Vector3 theScale = go.transform.localScale;
+            theScale.y = scale;
+            go.transform.localScale = theScale;
             go.transform.parent = transform.transform;
             go.GetComponent<HingeJoint2D>().connectedBody = curParent;
             curParent = go.GetComponent<Rigidbody2D>();
+
+            
+
             segmentLength = 0f;
         }
 
@@ -45,6 +57,14 @@ public class Hook : MonoBehaviour
         if (other.gameObject.CompareTag("Wall")) {
             rb.velocity = Vector2.zero;
             rb.isKinematic = true;
+
+
+            var childArray = GetComponentsInChildren<Rigidbody2D>();
+
+            for (var i = 0; i < childArray.Length; i++) {
+                childArray[i].velocity = Vector3.zero;
+                childArray[i].angularVelocity = 0f;
+            }
             
             
         }

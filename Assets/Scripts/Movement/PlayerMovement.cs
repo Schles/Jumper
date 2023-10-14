@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -53,8 +54,9 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
     public bool canDoubleJump = false;
 
-    private HingeJoint2D grapper;
+    private HingeJoint2D hingeJoint2D;
 
+    private Grappler grappler;
     public void Awake()
     {
         // assign a callback for the "jump" action.
@@ -68,7 +70,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GetComponent<Player>();
-        grapper = GetComponent<HingeJoint2D>();
+        hingeJoint2D = GetComponent<HingeJoint2D>();
+        grappler = GetComponent<Grappler>();
 
         sounds = GetComponents<AudioSource>();
 
@@ -141,7 +144,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
                     || (Physics2D.OverlapBox(backWallCheckPoint.position, _wallCheckSize, 0, groundLayer) && !IsFacingRight)) && !IsWallJumping)
                 lastOnWallRightTime = Data.coyoteTime;
 
-            //Right Wall Check
+            //Left Wall Check
             if (((Physics2D.OverlapBox(frontWallCheckPoint.position, _wallCheckSize, 0, groundLayer) && !IsFacingRight)
                 || (Physics2D.OverlapBox(backWallCheckPoint.position, _wallCheckSize, 0, groundLayer) && IsFacingRight)) && !IsWallJumping)
                 lastOnWallLeftTime = Data.coyoteTime;
@@ -188,7 +191,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
  
 
-        print("isHanging " + grapper.enabled);
+        print("isHanging " + IsOnRope());
         // Jump
         if( (CanJump() || CanDoubleJump()) && !CanWallJump() && lastPressedJumpTime > 0)
         {
@@ -215,19 +218,6 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
             WallJump(lastWallJumpDir);
         } 
-        else if (grapper.enabled && lastPressedJumpTime > 0)
-        {
-            IsWallJumping = true;
-            IsJumping = false;
-            IsJumpCut = false;
-            isJumpFalling = false;
-            wallJumpStartTime = Time.time;
-            lastWallJumpDir = (transform.localScale.x < 0) ? -1 : 1;
-            
-
-            RopeJump(lastWallJumpDir);
-        }
-
         
         if (CanSlide() && ((lastOnWallLeftTime > 0 && moveInput.x < 0) || (lastOnWallRightTime > 0 && moveInput.x > 0)))
             IsSliding = true;
@@ -240,14 +230,17 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         {
             rb.gravityScale = 0;
         }
-        else if (rb.velocity.y < 0 && moveInput.y < 0)
+        else if (IsOnRope()) {
+            rb.gravityScale = Data.gravityScale;
+        }
+        else if (rb.velocity.y < 0 && moveInput.y < 0 && !IsOnRope())
         {
             //Much higher gravity if holding down
             rb.gravityScale = Data.gravityScale * Data.fastFallGravityMult;
             //Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -Data.maxFastFallSpeed));
         }
-        else if (IsJumpCut)
+        else if (IsJumpCut && !IsOnRope())
         {
             //Higher gravity if jump button released
             rb.gravityScale = Data.gravityScale * Data.jumpCutGravityMult;
@@ -257,7 +250,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         {
             rb.gravityScale = Data.gravityScale * Data.jumpHangGravityMult;
         }
-        else if (rb.velocity.y < 0)
+        else if (rb.velocity.y < 0 && !IsOnRope())
         {
             //Higher gravity if falling
             rb.gravityScale = Data.gravityScale * Data.fallGravityMult;
@@ -286,6 +279,9 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         //Handle Slide
         if (IsSliding)
             Slide();
+        else if (IsOnRope() && moveInput.y != 0f) {
+            grappler.Slide((int)moveInput.y);
+        }
     }
 
     private void Run(float lerpAmount)
@@ -396,34 +392,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         sounds[0].Play();
     }
 
-    private void RopeJump(int dir)
-    {
-        print("Wall Jum");
-        //Ensures we can't call Wall Jump multiple times from one press
-        lastPressedJumpTime = 0;
-        lastOnGroundTime = 0;
-        lastOnWallRightTime = 0;
-        lastOnWallLeftTime = 0;
 
-        sounds[0].Play();
-
-        Vector2 force = new Vector2(Data.wallJumpForce.x, Data.wallJumpForce.y);
-        
-        force.x *= dir; //apply force in opposite direction of wall
-
-        if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
-            force.x -= rb.velocity.x;
-
-        if (rb.velocity.y < 0) //checks whether player is falling, if so we subtract the velocity.y (counteracting force of gravity). This ensures the player always reaches our desired jump force or greater
-            force.y -= rb.velocity.y;
-
-        //Unlike in the run we want to use the Impulse mode.
-        //The default mode will apply are force instantly ignoring masss
-        rb.AddForce(force, ForceMode2D.Impulse);
-
-        grapper.connectedBody.GetComponent<Rigidbody2D>().AddForce(force * -0.1f, ForceMode2D.Impulse);
-        grapper.GetComponent<Grappler>().Decouple();
-    }
 
     private void WallJump(int dir)
     {
@@ -486,6 +455,10 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         transform.localScale = theScale;
     }
 
+
+    private bool IsOnRope() {
+        return hingeJoint2D.enabled;
+    }
 
     private bool CanJump()
     {
