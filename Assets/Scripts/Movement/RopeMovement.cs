@@ -142,11 +142,7 @@ public class RopeMovement : MonoBehaviour
         }
 
  
-
-        print("isHanging " + grapper.enabled);
         // Jump
-     
-        
         if (CanSlide() && ((lastOnWallLeftTime > 0 && moveInput.x < 0) || (lastOnWallRightTime > 0 && moveInput.x > 0)))
             IsSliding = true;
         else

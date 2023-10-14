@@ -10,8 +10,6 @@ public class Grappler : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private LineRenderer lineRenderer;
-
     private HingeJoint2D hingeJoint2D;
 
     public InputAction aimAction;
@@ -45,46 +43,12 @@ public class Grappler : MonoBehaviour
 
     public LayerMask ropeLayer;
 
-    
-
-
-
     private Vector2 _ropeCheckSize = new Vector2(0.5f, 1f);
-
-    void Awake() {
-        
-        removeAction.performed += ctx => { OnRelease(ctx); };
-        //holdAction.performed += ctx => { OnHold(ctx); };
-        //holdAction.canceled += ctx => { OnHoldRelease(ctx); };
-    }
-
-    private void OnHoldRelease(InputAction.CallbackContext ctx)
-    {
-        this.attached = false;
-    }
-
-
-    private void OnHold(InputAction.CallbackContext ctx)
-    {
-        this.attached = true;
-    }
-
-
-    private void OnRelease(InputAction.CallbackContext ctx)
-    {
-        if( hookEntity != null) {
-            hingeJoint2D.enabled = false;
-            //lineRenderer.enabled = false;
-            Destroy(hookEntity);
-            hookEntity = null;
-        }
-    }
 
 
     void Start()
     {
-    
-        lineRenderer = GetComponent<LineRenderer>();
+
         hingeJoint2D = GetComponent<HingeJoint2D>();
         hingeJoint2D.enabled = false;   
         
@@ -112,12 +76,6 @@ public class Grappler : MonoBehaviour
             hasShoot = false;
         }
 
-        // if (springJoint2D.enabled) {
-        //     lineRenderer.SetPosition(0, transform.position);
-        //     lineRenderer.SetPosition(1, hookEntity.transform.position);            
-        // }
-
-    print("holding" + holdAction.IsPressed());
         var collision = Physics2D.OverlapBox(groundCheckPoint[0].position, _ropeCheckSize, 0, ropeLayer);
 
         if (!attached && collision && holdAction.IsPressed()) {
@@ -127,13 +85,7 @@ public class Grappler : MonoBehaviour
         }
 
         lastTimeOnRope -= Time.deltaTime;
-        // if (attached && curCollision != null && lastTimeOnRope < 0f) {
-        //     hingeJoint2D.enabled = true;
-        //     hingeJoint2D.connectedBody = curCollision.GetComponent<Rigidbody2D>();
-        // } else if (attached == false) {
-        //     hingeJoint2D.enabled = false;
-        //     curCollision = null;
-        // }
+
     }
 
 
@@ -215,14 +167,6 @@ public class Grappler : MonoBehaviour
                 } 
             }
         }
-print("pos" + hingeJoint2D.connectedAnchor);
-        // if (newSeg != null) {
-        //     //transform.position = newSeg.transform.position;
-        //     myConnection.isPlayerAttached = false;
-        //     newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
-        //     hingeJoint2D.connectedBody = newSeg.GetComponent<Rigidbody2D>();
-
-        // }
     }
 
     private float lastTimeOnRope = 0f;
@@ -243,57 +187,12 @@ print("pos" + hingeJoint2D.connectedAnchor);
         EventManager.StopListening("restart", OnReset);
     }
 
-    private GameObject DrawRope(Vector3 point) {
-        hookEntity = Instantiate(hook, point, Quaternion.identity);
-
-        var parent = hookEntity.GetComponent<Rigidbody2D>();
-
-        GameObject ropeEntity = null;
-
-        var distance = (transform.position - point).magnitude;
-
-        for( var i = 0; i < Mathf.Floor(distance); i++) {
-            var pos = hookEntity.transform.position + (Vector3.down * i);
-            ropeEntity = Instantiate(rope, pos, Quaternion.identity);
-            ropeEntity.GetComponent<HingeJoint2D>().connectedBody = parent;
-            parent = ropeEntity.GetComponent<Rigidbody2D>();
-
-            ropeEntity.transform.parent = hookEntity.transform;
-        }
-
-        return ropeEntity;
-    }
 
     public void OnReset(Dictionary<string, object> message)
     {
         hingeJoint2D.enabled = false;
         Destroy(hookEntity);
         hookEntity = null;
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        // if(!attached) {
-        //     if(other.gameObject.CompareTag("Rope")) {
-        //         if (attachedTo != other.gameObject.transform.parent) {
-        //             if (disregard == null || other.gameObject.transform.parent.gameObject != disregard) {
-        //                 print("Attaching");
-        //                 Attach(other.gameObject.GetComponent<Rigidbody2D>());
-        //             }
-                    
-        //         }
-        //     }
-        // }
-
-        if (other.gameObject.CompareTag("Rope")) {
-            curCollision = other.gameObject;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other) {
-        // if (other.gameObject.CompareTag("Rope") && curCollision == other.gameObject) {
-        //     curCollision = null;
-        // }
     }
 
 }
