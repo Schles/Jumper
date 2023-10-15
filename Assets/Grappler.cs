@@ -86,10 +86,10 @@ public class Grappler : MonoBehaviour
         var collision = Physics2D.OverlapBox(groundCheckPoint[0].position, _ropeCheckSize, 0, ropeLayer);
 
         if (!attached && collision && holdAction.IsPressed()) { 
-            if (hookEntity != null && hookEntity.GetComponent<Rigidbody2D>().isKinematic == true) {
+            //if (hookEntity != null && hookEntity.GetComponent<Rigidbody2D>().isKinematic == true) {
                 print("Hook");
                 Attach(collision.GetComponent<Rigidbody2D>());
-            }
+            //}
         } else if (attached && !holdAction.IsPressed()) {
             Detach();
         }

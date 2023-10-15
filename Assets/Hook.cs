@@ -32,7 +32,7 @@ public class Hook : MonoBehaviour
         segmentLength += rb.velocity.magnitude * Time.deltaTime;
 
 
-        if (segmentLength > 1f && distanceTraveled < maxDistance && rb.isKinematic == false) {
+        if (segmentLength > 0.5f && distanceTraveled < maxDistance && rb.isKinematic == false) {
             AddSegment();
             segmentLength = 0f;
         }
@@ -45,10 +45,11 @@ public class Hook : MonoBehaviour
     }
 
     public void AddSegment() {
-        var pos = curParent.transform.position + Vector3.down;
+        var pos = curParent.transform.position + Vector3.down * 0.5f;
         var go = Instantiate(ropeSegment, pos, Quaternion.identity);
 
         go.transform.parent = transform.transform;
+        go.transform.localScale = new Vector3(1f, 0.5f, 1f);
         go.GetComponent<HingeJoint2D>().connectedBody = curParent;
         curParent = go.GetComponent<Rigidbody2D>();
     }
