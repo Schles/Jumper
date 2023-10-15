@@ -13,15 +13,18 @@ public class RopeSegment : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        connectedAbove = GetComponent<HingeJoint2D>().connectedBody.gameObject;
-        RopeSegment aboveSegment = connectedAbove.GetComponent<RopeSegment>();
-        if(aboveSegment != null) {
-            aboveSegment.connectedBelow = gameObject;
-            //var spriteBottom = connectedAbove.GetComponent<SpriteRenderer>().bounds.size.y;
-            GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, 1);   
-        } else {
-            GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, 0);
-        }
+        // connectedAbove = GetComponent<HingeJoint2D>().connectedBody.gameObject;
+        // RopeSegment aboveSegment = connectedAbove.GetComponent<RopeSegment>();
+        // if(aboveSegment != null) {
+        //     aboveSegment.connectedBelow = gameObject;
+
+        //     print("oben " + connectedAbove.transform.position  + " | unten " + connectedBelow.transform.position);
+
+        //     //var spriteBottom = connectedAbove.GetComponent<SpriteRenderer>().bounds.size.y;
+        //     GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, 1);   
+        // } else {
+        //     GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, 0);
+        // }
     }
 
     // Update is called once per frame

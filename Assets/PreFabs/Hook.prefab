@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ropeSegment: {fileID: 6627460835601008617, guid: 712f0682cb44b874b9195a297af7e958, type: 3}
   distanceTraveled: 0
-  maxDistance: 25
+  maxDistance: 5
 --- !u!58 &6883325945934744904
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -43,7 +43,7 @@ public class Grappler : MonoBehaviour
 
     public LayerMask ropeLayer;
 
-    private Vector2 _ropeCheckSize = new Vector2(0.5f, 1f);
+    private Vector2 _ropeCheckSize = new Vector2(2f, 2f);
 
 
     void Start()
@@ -53,6 +53,8 @@ public class Grappler : MonoBehaviour
         hingeJoint2D.enabled = false;   
         
     }
+
+    private bool canShoot = true;
 
     // Update is called once per frame
     void LateUpdate()
@@ -65,8 +67,12 @@ public class Grappler : MonoBehaviour
         }
         
 
+        if (canShoot == false && GetComponent<PlayerMovement>().lastOnGroundTime > 0f) {
+            canShoot = true;
+        }
+
         var aimAmount = aimAction.ReadValue<Vector2>();
-        if (hasShoot == false && aimAmount.magnitude > 0.1f) {
+        if (hasShoot == false && aimAmount.magnitude > 0.1f && canShoot && !attached) {
             if (hookEntity != null) {
                 Destroy(hookEntity);
                 hookEntity = null;
@@ -75,6 +81,7 @@ public class Grappler : MonoBehaviour
             hookEntity = Instantiate(hook, transform.position, Quaternion.identity);
             hookEntity.GetComponent<Rigidbody2D>().velocity = aimAmount.normalized * speed;
             attached = false;
+            canShoot = false;
             hasShoot = true;
 
         } 
@@ -135,10 +142,10 @@ public class Grappler : MonoBehaviour
 
             if ( hingeJoint2D.connectedAnchor.y >= 1f) {
                 if(myConnection.connectedAbove != null) {
-                    print("1");
+                  
                     if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null) {
                         newSeg = myConnection.connectedAbove;
-                            print("2");
+                       
 
 
                         myConnection.isPlayerAttached = false;
@@ -161,7 +168,8 @@ public class Grappler : MonoBehaviour
             if (hingeJoint2D.connectedAnchor.y < 0f) {
 
                 if( myConnection.connectedBelow == null) {
-                    hookEntity.GetComponent<Hook>().AddSegment();
+                    print("create");
+                    hookEntity.GetComponent<Hook>().AddSegmentBelow();
                 }
 
                 if(myConnection.connectedBelow != null) {         
@@ -174,6 +182,8 @@ public class Grappler : MonoBehaviour
                 } 
             }
         }
+
+        print(hingeJoint2D.connectedAnchor);
     }
 
 
