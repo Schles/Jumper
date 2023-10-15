@@ -79,8 +79,8 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_BreakAction: 0
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0.9937017}
-  m_ConnectedAnchor: {x: 0, y: 0.9937017}
+  m_Anchor: {x: 0, y: 1.0004528}
+  m_ConnectedAnchor: {x: 0, y: 1.0004528}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -228,7 +228,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.50969005}
+  m_Offset: {x: 0.00009946525, y: 0.50048333}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -238,7 +238,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.13434982, y: 1.0116086}
+  m_Size: {x: 0.13819686, y: 1.0004693}
   m_EdgeRadius: 0
 --- !u!61 &-3783076554913260093
 BoxCollider2D:
@@ -274,7 +274,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.5}
+  m_Offset: {x: 0.000056877732, y: 0.5004576}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -284,7 +284,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.13793221, y: 1.0006107}
   m_EdgeRadius: 0
 --- !u!114 &-6376523422762925313
 MonoBehaviour:

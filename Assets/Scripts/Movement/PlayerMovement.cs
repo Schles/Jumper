@@ -279,8 +279,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         //Handle Slide
         if (IsSliding)
             Slide();
-        else if (IsOnRope() && moveInput.y != 0f) {
-            grappler.Slide((int)moveInput.y);
+        else if (IsOnRope() && Mathf.Abs(moveInput.y) > 0.1f) {
+            grappler.Slide(moveInput.y > 0f ? 1 : -1);
         }        
     }
 

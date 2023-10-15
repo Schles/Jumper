@@ -55,8 +55,15 @@ public class Grappler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+
+        if (hookEntity) {
+            var a = (transform.position - hookEntity.transform.position).magnitude;
+
+
+        }
+        
 
         var aimAmount = aimAction.ReadValue<Vector2>();
         if (hasShoot == false && aimAmount.magnitude > 0.1f) {
@@ -65,9 +72,9 @@ public class Grappler : MonoBehaviour
                 hookEntity = null;
             }
 
-            hookEntity = Instantiate(hook, transform.position + Vector3.up, Quaternion.identity);
+            hookEntity = Instantiate(hook, transform.position, Quaternion.identity);
             hookEntity.GetComponent<Rigidbody2D>().velocity = aimAmount.normalized * speed;
-
+            attached = false;
             hasShoot = true;
 
         } 
@@ -78,13 +85,16 @@ public class Grappler : MonoBehaviour
 
         var collision = Physics2D.OverlapBox(groundCheckPoint[0].position, _ropeCheckSize, 0, ropeLayer);
 
-        if (!attached && collision && holdAction.IsPressed()) {
-            Attach(collision.GetComponent<Rigidbody2D>());
+        if (!attached && collision && holdAction.IsPressed()) { 
+            if (hookEntity != null && hookEntity.GetComponent<Rigidbody2D>().isKinematic == true) {
+                print("Hook");
+                Attach(collision.GetComponent<Rigidbody2D>());
+            }
         } else if (attached && !holdAction.IsPressed()) {
             Detach();
         }
 
-        lastTimeOnRope -= Time.deltaTime;
+  
 
     }
 
@@ -113,25 +123,22 @@ public class Grappler : MonoBehaviour
         hingeJoint2D.enabled = false;
         curCollision = null;
 
-        lastTimeOnRope = 0.5f;
+
     }
 
     public void Slide(int direction) {
         RopeSegment myConnection = hingeJoint2D.connectedBody.gameObject.GetComponent<RopeSegment>();
         GameObject newSeg = null;
-
         var speed = 0.1f;
-
-        if( direction > 0) {
-
-            
+        if( direction > 0) {            
             hingeJoint2D.connectedAnchor = new Vector2(0f, hingeJoint2D.connectedAnchor.y + direction * speed);
 
-            if ( hingeJoint2D.connectedAnchor.y > 1f) {
+            if ( hingeJoint2D.connectedAnchor.y >= 1f) {
                 if(myConnection.connectedAbove != null) {
+                    print("1");
                     if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null) {
                         newSeg = myConnection.connectedAbove;
-                        
+                            print("2");
 
 
                         myConnection.isPlayerAttached = false;
@@ -169,7 +176,7 @@ public class Grappler : MonoBehaviour
         }
     }
 
-    private float lastTimeOnRope = 0f;
+
 
     public void OnEnable()
     {

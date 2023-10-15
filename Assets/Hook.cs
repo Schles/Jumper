@@ -21,21 +21,19 @@ public class Hook : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         curParent = rb;
+
+        //AddSegment();
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         distanceTraveled += rb.velocity.magnitude * Time.deltaTime;
         segmentLength += rb.velocity.magnitude * Time.deltaTime;
 
 
         if (segmentLength > 1f && distanceTraveled < maxDistance && rb.isKinematic == false) {
-            
             AddSegment();
-
-            
-
             segmentLength = 0f;
         }
 
